@@ -19,6 +19,7 @@ function init() {
     stage.sol = new createjs.Bitmap(rutas.imagenes.SOL);
     stage.nube1 = new createjs.Bitmap(rutas.imagenes.NUBE);
     stage.nube2 = new createjs.Bitmap(rutas.imagenes.NUBE);
+    stage.nube2.x = 1327;
 
     //Fondo-conjunto
     stage.menu = new createjs.Container();
@@ -32,6 +33,25 @@ function init() {
     stage.ins_o = new createjs.Bitmap(rutas.imagenes.INSTRUCCIONES_OVER);
     stage.jugar_o = new createjs.Bitmap(rutas.imagenes.JUGAR_OVER);
     stage.flecha_usuario = new createjs.Bitmap(rutas.imagenes.FLECHA_USUARIO);
+    
+    //Header-partes
+    stage.bienvenidos = new createjs.Bitmap(rutas.imagenes.BIENVENIDOS);
+    stage.logo = new createjs.Bitmap(rutas.imagenes.RED_LOBSTER);
+    
+    //Pasto
+    stage.pasto = new createjs.Bitmap(rutas.imagenes.PASTO);
+    
+    //Pato
+    stage.pato = new createjs.Bitmap(rutas.imagenes.PATO);
+    
+    //Dialogo
+    stage.dialogo = new createjs.Bitmap(rutas.imagenes.DIALOGO);
+    
+    //Terminos
+    stage.terminos = new createjs.Bitmap(rutas.imagenes.TERMINOS);
+    
+    //Sombra hombre
+    stage.sommbra_hombre = new createjs.Bitmap(rutas.imagenes.SOMBRA_HOMBRE);
 
     //no-visible
     stage.conn_o.visible = false;
@@ -54,11 +74,26 @@ function init() {
         stage.nombre = new createjs.Text(user.name, 'bold 30px Arial', '#3c1500');
         stage.nombre.lineWidth = 150;
         stage.nombre.maxWidth = 110;
-        stage.nombre.textBaseline = "middle"
+        stage.nombre.textBaseline = "middle";
 
-        stage.imagen_usuario = new createjs.Bitmap('http://graph.facebook.com/' + user.id + '/picture?width=78&height=78&size=normal');
-        stage.imagen_usuario.x = 116;
-        stage.imagen_usuario.y = -31;
+        var image = new Image();
+        image.crossOrigin="Anonymous";
+        image.src = 'https://graph.facebook.com/' + user.id + '/picture?width=78&height=78&size=normal';
+        
+        image.onload = function() {
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(image,0,0);
+            stage.imagen_usuario = new createjs.Bitmap(canvas.toDataURL("image/png"));
+            stage.cm = new createjs.Shape();
+            stage.cm.graphics.beginFill('black').drawCircle(39).cp();
+            stage.imagen_usuario.x = 116;
+            stage.imagen_usuario.y = -31;
+            
+            stage.usuario.addChild(stage.imagen_usuario);
+            stage.usuario.addChild(stage.recuadro);
+        };
+        
         stage.recuadro = new createjs.Shape();
         stage.recuadro.graphics.beginStroke('#3c1500').setStrokeStyle(4).dr(0, 0, 78, 78).cp();
         stage.recuadro.x = 116;
@@ -69,8 +104,7 @@ function init() {
         stage.usuario.rotation = 7.3;
 
         stage.usuario.addChild(stage.nombre);
-        stage.usuario.addChild(stage.imagen_usuario);
-        stage.usuario.addChild(stage.recuadro)
+        
     } else {
         stage.flecha_usuario.visible = false;
     }
@@ -85,6 +119,11 @@ function init() {
     stage.letrero.addChild(stage.ins_o);
     stage.letrero.addChild(stage.jugar_o);
     stage.letrero.addChild(stage.usuario_c);
+    
+    //header-conjunto
+    stage.header = new createjs.Container();
+    stage.header.addChild(stage.bienvenidos);
+    stage.header.addChild(stage.logo);
 
 
     stage.conn.onMouseOver = function(event) {
@@ -132,21 +171,21 @@ function init() {
     };
 
     stage.flecha_usuario.onMouseOver = function() {
-        stage.usuario_c.x-=2;
-        stage.usuario_c.y+=2;
-        stage.nombre.color="black";
+        stage.usuario_c.x -= 2;
+        stage.usuario_c.y += 2;
+        stage.nombre.color = "black";
         stage.recuadro.graphics.c().beginStroke('black').setStrokeStyle(4).dr(0, 0, 78, 78).cp();
         setCursor('pointer');
     }
-    
+
     stage.flecha_usuario.onMouseOut = function() {
-        stage.usuario_c.x+=2;
-        stage.usuario_c.y-=2;
-        stage.nombre.color="#3c1500";
+        stage.usuario_c.x += 2;
+        stage.usuario_c.y -= 2;
+        stage.nombre.color = "#3c1500";
         stage.recuadro.graphics.c().beginStroke('#3c1500').setStrokeStyle(4).dr(0, 0, 78, 78).cp()
         setCursor();
     }
-    
+
     stage.flecha_usuario.onPress = function() {
         window.open('https://www.facebook.com/', '_blank');
     }
@@ -170,7 +209,14 @@ function init() {
     stage.menu.addChild(stage.letrero);
     stage.menu.addChild(stage.sol);
     stage.menu.addChild(stage.nube1);
+    stage.menu.addChild(stage.nube2);
     stage.menu.addChild(animation);
+    stage.menu.addChild(stage.header);
+    stage.menu.addChild(stage.pasto);
+    stage.menu.addChild(stage.dialogo);
+    stage.menu.addChild(stage.terminos);
+    stage.menu.addChild(stage.pato);
+    stage.menu.addChild(stage.sommbra_hombre);
 
     animation.gotoAndPlay('saludo');
     stage.addChild(stage.menu);

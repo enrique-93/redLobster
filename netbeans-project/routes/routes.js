@@ -1,3 +1,5 @@
+var request = require('request');
+
 module.exports = function(app, passport) {
 
     // route for home page
@@ -31,6 +33,15 @@ module.exports = function(app, passport) {
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/');
+    });
+    
+    app.post('/toBase64',function(req,res){
+        //var dir = req.files.src;
+        console.log(req.body,req.files);
+        /*request(dir,function(error,response,body){
+           console.log(body);
+        });*/
+        res.end();
     });
 
 };
