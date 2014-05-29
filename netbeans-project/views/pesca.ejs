@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+            var user ;
+            try{
+                user = <%-user.facebook%>
+            }catch(exc){
+            }
+        </script>
+         <script src="javascripts/atari/jquery-1.7.2.min.js" ></script>
+         <script src="javascripts/atari/easeljs-0.5.0.min.js" ></script>
+         <script src="javascripts/atari/tweenjs-0.3.0.min.js" ></script>
+         <script src="javascripts/atari/preloadjs-0.2.0.min.js" ></script>
+         <script src="javascripts/atari/json2.min.js" ></script>
+         <script src="javascripts/recursos.js" ></script>
+         <script src="javascripts/juego.js" ></script>
+    </head>
+    <body onload="init()">
+        <canvas id="juego" width="1327" height="1004"></canvas>
+    </body>
+</html>

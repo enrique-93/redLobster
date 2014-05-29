@@ -214,3 +214,4 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 /redlobster/nbproject/private/
+/netbeans-project/nbproject/private/
