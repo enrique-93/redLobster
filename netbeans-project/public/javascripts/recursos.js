@@ -19,7 +19,12 @@ rutas.imagenes = {
     PATO: 'images/pato.png',
     RED_LOBSTER: 'images/redLobster.png',
     SOMBRA_HOMBRE: 'images/sombra-hombre.png',
-    TERMINOS: 'images/terminos.png'
+    TERMINOS: 'images/terminos.png',
+    MODAL_INSTRUCCIONES: 'images/modal_instrucciones.png',
+    BOTON_CERRAR: 'images/boton-cerrar.png',
+    BOTON_CERRAR_OVER: 'images/boton-cerrar-over.png',
+    PESCADOR_HOME: 'images/pescador_home.png',
+    PAJARO: 'images/pajaro.png'
 };
 
 

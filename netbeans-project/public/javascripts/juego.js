@@ -17,15 +17,22 @@ function init() {
     //Fondo-partes
     stage.fondo_menu = new createjs.Bitmap(rutas.imagenes.FONDO_MENU);
     stage.sol = new createjs.Bitmap(rutas.imagenes.SOL);
+    stage.sol.x = 689;
+    stage.sol.y = -13;
     stage.nube1 = new createjs.Bitmap(rutas.imagenes.NUBE);
+    stage.nube1.x = 3;
+    stage.nube1.y = 58;
     stage.nube2 = new createjs.Bitmap(rutas.imagenes.NUBE);
     stage.nube2.x = 1327;
+    stage.nube2.y = 58;
 
     //Fondo-conjunto
     stage.menu = new createjs.Container();
 
     //Letrero-partes
     stage.tabla = new createjs.Bitmap(rutas.imagenes.LETRERO);
+    stage.tabla.x = 616;
+    stage.tabla.y = 250;
     stage.conn = new createjs.Bitmap(rutas.imagenes.CONECTAR);
     stage.ins = new createjs.Bitmap(rutas.imagenes.INSTRUCCIONES);
     stage.jugar = new createjs.Bitmap(rutas.imagenes.JUGAR);
@@ -36,23 +43,58 @@ function init() {
     
     //Header-partes
     stage.bienvenidos = new createjs.Bitmap(rutas.imagenes.BIENVENIDOS);
+    stage.bienvenidos.x = 479;
     stage.logo = new createjs.Bitmap(rutas.imagenes.RED_LOBSTER);
+    stage.logo.x =195;
     
     //Pasto
     stage.pasto = new createjs.Bitmap(rutas.imagenes.PASTO);
     
     //Pato
     stage.pato = new createjs.Bitmap(rutas.imagenes.PATO);
+    stage.pato.x = 1125;
+    stage.pato.y = 475;
     
     //Dialogo
     stage.dialogo = new createjs.Bitmap(rutas.imagenes.DIALOGO);
+    stage.dialogo.x = 318;
+    stage.dialogo.y = 231;
     
     //Terminos
     stage.terminos = new createjs.Bitmap(rutas.imagenes.TERMINOS);
+    stage.terminos.x = 325;
+    stage.terminos.y = 775;
     
     //Sombra hombre
-    stage.sommbra_hombre = new createjs.Bitmap(rutas.imagenes.SOMBRA_HOMBRE);
-
+    stage.sombra_hombre = new createjs.Bitmap(rutas.imagenes.SOMBRA_HOMBRE);
+    stage.sombra_hombre.x = 415;
+    stage.sombra_hombre.y = 595;
+    
+    //Sombra ardilla
+    stage.sombra_ardilla = new createjs.Bitmap(rutas.imagenes.SOMBRA_HOMBRE);
+    stage.sombra_ardilla.scaleX = 1.6;
+    stage.sombra_ardilla.x = 239;
+    stage.sombra_ardilla.y = 76;
+    
+    //Modal instrucciones-partes
+    stage.instrucciones = new createjs.Bitmap(rutas.imagenes.MODAL_INSTRUCCIONES);
+    stage.boton_cerrar = new createjs.Bitmap(rutas.imagenes.BOTON_CERRAR);
+    stage.boton_cerrar.x = 942;
+    stage.boton_cerrar.y = 251;
+    stage.boton_cerrar_over = new createjs.Bitmap(rutas.imagenes.BOTON_CERRAR_OVER);
+    stage.boton_cerrar_over.x = 942;
+    stage.boton_cerrar_over.y = 251;
+    stage.boton_cerrar_over.visible = false;
+  
+    //Modal instrucciones-conjunto
+    stage.modal_instrucciones = new createjs.Container();
+    stage.modal_instrucciones.addChild(stage.instrucciones);
+    
+    stage.modal_instrucciones.addChild(stage.boton_cerrar);
+    stage.modal_instrucciones.addChild(stage.boton_cerrar_over);
+    stage.modal_instrucciones.visible = false;
+    
+    
     //no-visible
     stage.conn_o.visible = false;
     stage.ins_o.visible = false;
@@ -184,11 +226,37 @@ function init() {
         stage.nombre.color = "#3c1500";
         stage.recuadro.graphics.c().beginStroke('#3c1500').setStrokeStyle(4).dr(0, 0, 78, 78).cp()
         setCursor();
-    }
+    };
 
     stage.flecha_usuario.onPress = function() {
         window.open('https://www.facebook.com/', '_blank');
-    }
+    };
+    
+    stage.ins_o.onPress = function() {
+        setCursor();
+        //animation.stop();
+        stage.modal_instrucciones.visible = true;
+        
+    };
+    
+    stage.boton_cerrar.onMouseOver = function() {
+        setCursor('pointer');
+        stage.boton_cerrar.visible = false;
+        stage.boton_cerrar_over.visible = true;
+    };
+    
+    stage.boton_cerrar_over.onMouseOut = function() {
+        setCursor();
+        stage.boton_cerrar.visible = true;
+        stage.boton_cerrar_over.visible = false;
+    };
+    
+    stage.boton_cerrar_over.onPress = function() {
+        setCursor();
+        stage.boton_cerrar.visible = true;
+        stage.boton_cerrar_over.visible = false;
+        stage.modal_instrucciones.visible = false;
+    };
 
     var data = {
         images: [rutas.imagenes.ARDILLA],
@@ -204,21 +272,57 @@ function init() {
     animation = new createjs.BitmapAnimation(spriteSheet);
     animation.x = 901;
     animation.y = 508;
+    
+    var data1 = {
+        images: [rutas.imagenes.PESCADOR_HOME],
+        frames: {width: 328, height: 334, count:127},
+        animations: {saludo: [], regreso: []}
+    };
+    for (var a = 0; a < 127; a++) {
+        data1.animations.saludo.push(a);
+    }
+    data1.animations.saludo.push('saludo');
+
+    var spriteSheet1 = new createjs.SpriteSheet(data1);
+    pescador = new createjs.BitmapAnimation(spriteSheet1);
+    pescador.x = 385;
+    pescador.y = 304;
+    
+    var data2 = {
+        images: [rutas.imagenes.PAJARO],
+        frames: {width: 58, height: 74, count:11},
+        animations: {saludo: [], regreso: []}
+    };
+    for (var a = 0; a < 11; a++) {
+        data2.animations.saludo.push(a);
+    }
+    data2.animations.saludo.push('saludo');
+
+    var spriteSheet2 = new createjs.SpriteSheet(data2);
+    pajaro = new createjs.BitmapAnimation(spriteSheet2);
+    pajaro.x = 703;
+    pajaro.y = 112;
 
     stage.menu.addChild(stage.fondo_menu);
-    stage.menu.addChild(stage.letrero);
     stage.menu.addChild(stage.sol);
     stage.menu.addChild(stage.nube1);
     stage.menu.addChild(stage.nube2);
+    stage.menu.addChild(stage.sombra_hombre);
+    stage.menu.addChild(stage.pato);
+    stage.menu.addChild(stage.dialogo);
+    stage.menu.addChild(pescador);
+    stage.menu.addChild(stage.letrero);
+    stage.menu.addChild(stage.pasto);
+    stage.menu.addChild(stage.sombra_ardilla);
     stage.menu.addChild(animation);
     stage.menu.addChild(stage.header);
-    stage.menu.addChild(stage.pasto);
-    stage.menu.addChild(stage.dialogo);
+    stage.menu.addChild(pajaro);
     stage.menu.addChild(stage.terminos);
-    stage.menu.addChild(stage.pato);
-    stage.menu.addChild(stage.sommbra_hombre);
+    stage.menu.addChild(stage.modal_instrucciones);
 
     animation.gotoAndPlay('saludo');
+    pescador.gotoAndPlay('saludo');
+    pajaro.gotoAndPlay('saludo');
     stage.addChild(stage.menu);
 }
 
