@@ -24,7 +24,24 @@ rutas.imagenes = {
     BOTON_CERRAR: 'images/boton-cerrar.png',
     BOTON_CERRAR_OVER: 'images/boton-cerrar-over.png',
     PESCADOR_HOME: 'images/pescador_home.png',
-    PAJARO: 'images/pajaro.png'
+    PAJARO: 'images/pajaro.png',
+    BEFORE: 'images/before.png',
+    GUIA: 'images/guia.png',
+    ORILLA: 'images/orilla.png',
+    FONDO_JUEGO: 'images/fondo_juego.png',
+    ARBUSTOS: 'images/arbustos.png',
+    FARO: 'images/faro.png',
+    LANCHA: 'images/lancha.png',
+    NUBE_PESCA : 'images/nube_pesca.png',
+    BALLENA : 'images/ballena.png',
+    LOGO_PESCA : 'images/logo-pesca.png',
+    PTS : 'images/puntos.png',
+    BARCO_SOMBRA : 'images/sombra-barco.png',
+    TERMINOS_PESCA: 'images/terminos_pesca.png',
+    SOL_PESCA: 'images/sol-pesca.png',
+    ALGAS : 'images/algas.png',
+    OPACO : 'images/opaco.png',
+    CAPA_AGUA : 'images/capa-agua.png'
 };
 
 

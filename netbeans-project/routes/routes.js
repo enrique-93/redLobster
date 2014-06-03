@@ -11,7 +11,13 @@ module.exports = function(app, passport) {
 
     // route for showing the profile page
     app.get('/', isLoggedIn, function(req, res) {
-        res.render('pesca.ejs', {
+        res.render('menu.ejs', {
+            user: req.user // get the user out of session and pass to template
+        });
+    });
+    
+    app.get('/pesquinia', isLoggedIn, function(req, res) {
+        res.render('pesquinia.ejs', {
             user: req.user // get the user out of session and pass to template
         });
     });
@@ -51,5 +57,5 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    res.render('pesca.ejs', {user: {'facebook':'ninguno'}});
+    res.render('menu.ejs', {user: {'facebook':'ninguno'}});
 }
