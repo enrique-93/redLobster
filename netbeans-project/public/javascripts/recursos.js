@@ -41,7 +41,13 @@ rutas.imagenes = {
     SOL_PESCA: 'images/sol-pesca.png',
     ALGAS : 'images/algas.png',
     OPACO : 'images/opaco.png',
-    CAPA_AGUA : 'images/capa-agua.png'
+    CAPA_AGUA : 'images/capa-agua.png',
+    GARZA : 'images/garza.png',
+    PEZ: 'images/pez1.png',
+    TORTUGA: 'images/tortuga.png',
+    PESCADOR_BOTE: 'images/pescador_bote.png',
+    PUNTERO : 'images/puntero.png',
+    CARNADA : 'images/carnada.png'
 };
 
 

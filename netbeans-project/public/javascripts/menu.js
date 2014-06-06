@@ -9,6 +9,9 @@ function init() {
     createjs.Ticker.addEventListener('tick', function() {
         stage.update();
     });
+
+    createjs.MotionGuidePlugin.install(createjs.Tween);
+
     stage.enableMouseOver(100);
 
     //Fondo-partes
@@ -16,10 +19,8 @@ function init() {
     stage.sol = new createjs.Bitmap(rutas.imagenes.SOL);
     stage.sol.x = 689;
     stage.sol.y = -13;
-    stage.nube1 = new createjs.Bitmap(rutas.imagenes.NUBE);
-    stage.nube1.x = 3;
-    stage.nube1.y = 58;
-    stage.nube2 = new createjs.Bitmap(rutas.imagenes.NUBE);
+    stage.nube1 = new NubeHome({x: 3, y: 58, velocidad: 1327 / 14498});
+    stage.nube2 = new NubeHome({x: 1327, y: 58, velocidad: 1327 / 14498});
     stage.nube2.x = 1327;
     stage.nube2.y = 58;
 
@@ -53,8 +54,8 @@ function init() {
 
     //Pato
     stage.pato = new createjs.Bitmap(rutas.imagenes.PATO);
-    stage.pato.x = 1125;
-    stage.pato.y = 475;
+    stage.pato.x = 1126;
+    stage.pato.y = 538;
 
     //Dialogo
     stage.dialogo = new createjs.Bitmap(rutas.imagenes.DIALOGO);
@@ -119,7 +120,18 @@ function init() {
         stage.nombre.lineWidth = 150;
         stage.nombre.maxWidth = 110;
         stage.nombre.textBaseline = "middle";
-
+        
+        stage.cerrar = new createjs.Container();
+        stage.cerrar_texto = new createjs.Text('desconectar', '25px Arial', 'black');
+        stage.recuadroC = new createjs.Shape();
+        stage.recuadroC.graphics.f('rgba(100,100,100,.7)').dr(0,0,170,28);
+        
+        stage.cerrar.addChild(stage.recuadroC,stage.cerrar_texto);
+        stage.cerrar.x = 47;
+        stage.cerrar.y = 45;
+        stage.cerrar.visible = false;
+        
+        
         var image = new Image();
         image.crossOrigin = "Anonymous";
         image.src = 'https://graph.facebook.com/' + user.id + '/picture?width=160&height=160&size=normal';
@@ -127,15 +139,15 @@ function init() {
         image.onload = function() {
             var canvas = document.createElement("canvas");
             var ctx = canvas.getContext("2d");
-            ctx.drawImage(image, 0, 0,60,60);
+            ctx.drawImage(image, 0, 0, 60, 60);
             stage.imagen_usuario = new createjs.Container();
             stage.imagen_usuario.x = 129;
             stage.imagen_usuario.y = -15;
             stage.foto = new createjs.Bitmap(canvas.toDataURL("image/png"));
             stage.cm = new createjs.Shape();
-            stage.cm.graphics.beginFill('black').drawCircle(30,30,30).cp();
+            stage.cm.graphics.beginFill('black').drawCircle(30, 30, 30).cp();
             stage.foto.mask = stage.cm;
-            cambia(stage.foto,60);
+            cambia(stage.foto, 60);
 
             stage.imagen_usuario.addChild(stage.foto);
             stage.imagen_usuario.addChild(stage.recuadro);
@@ -143,14 +155,14 @@ function init() {
         };
 
         stage.recuadro = new createjs.Shape();
-        stage.recuadro.graphics.beginStroke('#3c1500').setStrokeStyle(4).dc(30,30,30).cp();
+        stage.recuadro.graphics.beginStroke('#3c1500').setStrokeStyle(4).dc(30, 30, 30).cp();
 
         stage.usuario.x = 677;
         stage.usuario.y = 480;
         stage.usuario.rotation = 7.3;
 
         stage.usuario.addChild(stage.nombre);
-
+        stage.usuario.addChild(stage.cerrar)
     } else {
         stage.flecha_usuario.visible = false;
     }
@@ -210,11 +222,14 @@ function init() {
         stage.ins.visible = true;
     });
 
-    stage.flecha_usuario.on('mouseover', function() {
+    stage.flecha_usuario.on('mouseover', function(evt) {
         stage.usuario_c.x -= 2;
         stage.usuario_c.y += 2;
         stage.nombre.color = "black";
         stage.recuadro.graphics.c().beginStroke('black').setStrokeStyle(4).dc(30, 30, 30).cp();
+        stage.cerrar.visible = true;
+        //stage.cerrar.x = evt.stageX;
+        //stage.cerrar.y = evt.stageY;
     });
 
     stage.flecha_usuario.on('mouseout', function() {
@@ -222,16 +237,17 @@ function init() {
         stage.usuario_c.y -= 2;
         stage.nombre.color = "#3c1500";
         stage.recuadro.graphics.c().beginStroke('#3c1500').setStrokeStyle(4).dc(30, 30, 30).cp()
+        stage.cerrar.visible = false;
     });
 
     stage.flecha_usuario.on('click', function() {
-        window.open('https://www.facebook.com/', '_blank');
+        location.href = '/logout';
     });
 
     stage.jugar_o.on('click', function() {
         location.href = '/pesquinia';
     });
-    
+
     stage.ins_o.on('click', function() {
         stage.modal_instrucciones.visible = true;
     });
@@ -252,50 +268,11 @@ function init() {
         stage.modal_instrucciones.visible = false;
     });
 
-    var data = {
-        images: [rutas.imagenes.ARDILLA],
-        frames: {width: 231, height: 178},
-        animations: {saludo: [], regreso: []}
-    };
-    for (var a = 0; a < 44; a++) {
-        data.animations.saludo.push(a);
-    }
-    data.animations.saludo.push('saludo');
 
-    var spriteSheet = new createjs.SpriteSheet(data);
-    ardilla = new createjs.Sprite(spriteSheet);
-    ardilla.x = 901;
-    ardilla.y = 508;
-
-    var data1 = {
-        images: [rutas.imagenes.PESCADOR_HOME],
-        frames: {width: 328, height: 334, count: 127},
-        animations: {saludo: [], regreso: []}
-    };
-    for (var a = 0; a < 127; a++) {
-        data1.animations.saludo.push(a);
-    }
-    data1.animations.saludo.push('saludo');
-
-    var spriteSheet1 = new createjs.SpriteSheet(data1);
-    pescador = new createjs.Sprite(spriteSheet1);
-    pescador.x = 385;
-    pescador.y = 304;
-
-    var data2 = {
-        images: [rutas.imagenes.PAJARO],
-        frames: {width: 58, height: 74, count: 11},
-        animations: {saludo: [], regreso: []}
-    };
-    for (var a = 0; a < 11; a++) {
-        data2.animations.saludo.push(a);
-    }
-    data2.animations.saludo.push('saludo');
-
-    var spriteSheet2 = new createjs.SpriteSheet(data2);
-    pajaro = new createjs.Sprite(spriteSheet2);
-    pajaro.x = 703;
-    pajaro.y = 112;
+    stage.ardilla = new Ardilla({x: 901, y: 508});
+    stage.pescador = new PescadorHome({x: 385, y: 304});
+    stage.carpintero = new Carpintero({x: 703, y: 112});
+    stage.garza = new Garza({x: 1134, y: 461, sx: .45, sy: .45});
 
     stage.menu.addChild(stage.fondo_menu);
     stage.menu.addChild(stage.sol);
@@ -303,20 +280,77 @@ function init() {
     stage.menu.addChild(stage.nube2);
     stage.menu.addChild(stage.sombra_hombre);
     stage.menu.addChild(stage.pato);
+    stage.menu.addChild(stage.garza);
     stage.menu.addChild(stage.dialogo);
-    stage.menu.addChild(pescador);
+    stage.menu.addChild(stage.pescador);
     stage.menu.addChild(stage.letrero);
     stage.menu.addChild(stage.pasto);
     stage.menu.addChild(stage.sombra_ardilla);
-    stage.menu.addChild(ardilla);
+    stage.menu.addChild(stage.ardilla);
     stage.menu.addChild(stage.header);
-    stage.menu.addChild(pajaro);
+    stage.menu.addChild(stage.carpintero);
     stage.menu.addChild(stage.terminos);
     stage.menu.addChild(stage.modal_instrucciones);
 
-    //ardilla.gotoAndPlay('saludo');
-    pescador.gotoAndPlay('saludo');
-    pajaro.gotoAndPlay('saludo');
+    //Animaciones
+    createjs.Tween.get(stage.ardilla, {loop: true})
+            .wait(1000)
+            .call(stage.ardilla.saludar)
+            .wait(7000);
+
+    createjs.Tween.get(stage.pescador, {loop: true})
+            .wait(6000)
+            .call(stage.pescador.invitar)
+            .wait(5000);
+
+
+
+    createjs.Tween.get(stage.dialogo, {loop: false})
+            .to({alpha: 0}, 0)
+            .call(dialogo);
+
+    function dialogo() {
+        createjs.Tween.get(stage.dialogo, {loop: true})
+                .wait(6000)
+                .to({alpha: 1}, 500)
+                .wait(4000)
+                .to({alpha: 0}, 500);
+    }
+
+    createjs.Tween.get(stage.carpintero, {loop: true})
+            .wait(2000)
+            .call(stage.carpintero.picar)
+            .wait(1000)
+            .call(stage.carpintero.picar)
+            .wait(1000)
+            .call(stage.carpintero.picar)
+            .wait(1000)
+            .call(stage.carpintero.picar)
+            .wait(1000)
+            .call(stage.carpintero.picar)
+            .wait(4000);
+
+    createjs.Tween.get(stage.garza, {loop: true})
+            .wait(14000)
+            .call(stage.garza.moverCabeza)
+            .wait(1000);
+
+    createjs.Tween.get(stage.nube1, {loop: false})
+            .to({x: -1327}, 1327 / stage.nube1.velocidad)
+            .wait(399).call(animaNube, [stage.nube1]);
+
+    createjs.Tween.get(stage.nube2, {loop: false})
+            .call(animaNube, [stage.nube2]);
+
+
+    function animaNube(obj) {
+        createjs.Tween.get(obj, {loop: true})
+                .to({x: 1327}, 0)
+                .wait(1)
+                .to({x: -1327}, 2654 / obj.velocidad)
+                .wait(399);
+    }
+
     stage.addChild(stage.menu);
 }
 
@@ -336,8 +370,8 @@ function drag(obj) {
         var dy = evto.stageY - obj.y;
         obj.x += (dx - obj.dx);
         obj.y += (dy - obj.dy);
-        
-        if(obj.mask){
+
+        if (obj.mask) {
             obj.mask.x += (dx - obj.dx);
             obj.mask.y += (dy - obj.dy);
         }
