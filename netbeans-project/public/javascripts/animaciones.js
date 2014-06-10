@@ -2,12 +2,13 @@ function Tortuga(obj) {
     var tortuga_data = {
         images: [rutas.imagenes.TORTUGA],
         frames: {width: 228, height: 118, count: 21},
-        animations: {nadar: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]}
+        animations: {nadar: [0, 20]}
     };
     var spriteSheet = new createjs.SpriteSheet(tortuga_data);
     var tortuga = new createjs.Sprite(spriteSheet, 'nadar');
     tortuga.regX = 114;
-    tortuga.regY = 59;
+    tortuga.sy = 118;
+    tortuga.velocidad = 1327 / 10000;
     if (obj) {
         if (obj.x) {
             tortuga.x = obj.x;
@@ -21,9 +22,52 @@ function Tortuga(obj) {
         if (obj.sy) {
             tortuga.scaleY = obj.sy;
         }
+        if (obj.velocidad) {
+            tortuga.velocidad *= obj.velocidad;
+        }
     }
 
     return tortuga;
+}
+
+function Langosta(obj) {
+    var langosta_data = {
+        images: [rutas.imagenes.LANGOSTA],
+        frames: {width: 272, height: 243, count: 24},
+        animations: {caminar: [0, 23], stop: [0]}
+    };
+    var spriteSheet = new createjs.SpriteSheet(langosta_data);
+    var langosta = new createjs.Sprite(spriteSheet);
+    langosta.regX = 136;
+    langosta.regY = 121.5;
+    langosta.velocidad = 827 / 10000;
+    if (obj) {
+        if (obj.x) {
+            langosta.x = obj.x;
+        }
+        if (obj.y) {
+            langosta.y = obj.y;
+        }
+        if (obj.sx) {
+            langosta.scaleX = obj.sx;
+        }
+        if (obj.sy) {
+            langosta.scaleY = obj.sy;
+        }
+        if (obj.velocidad) {
+            langosta.velocidad *= obj.velocidad;
+        }
+    }
+
+    langosta.nadar = function() {
+        langosta.gotoAndPlay('caminar');
+    };
+
+    langosta.detener = function() {
+        langosta.gotoAndPlay('stop');
+    };
+
+    return langosta;
 }
 
 function Pescador(obj) {
@@ -38,16 +82,21 @@ function Pescador(obj) {
             .qt(i.x - 20, i.y - 46, i.x - 79, i.y - 49)
             .qt(i.x - 182, i.y - 60, i.x - 214, i.y + 50);
 
+    var speed = 3;
+
     var pescador_data = {
-        images: [rutas.imagenes.PESCADOR_BOTE],
-        frames: {width: 224, height: 173, count: 46},
-        animations: {run: [false], pescar: {frames: [], next: "stop", speed: 1}, stop: [0]}
+        images: [rutas.imagenes.PESCADOR_BOTE,
+            rutas.imagenes.PESCADOR_OJOS,
+            rutas.imagenes.PESCADOR_CARNADA],
+        frames: getFrames(147, 124, 81, 6, -100, -49, 2, getFrames(124, 124, 51, 16, -100, -49, 1, getFrames(224, 173, 46, 9, 0, 0, 0))),
+        animations: {run: [false], pescar: [0, 45, 'stop', speed], stop: [0], saludo: [45, 96, 'stop'], carnada: [96, 118, 'stop', speed]}
     };
-    for (var a = 0; a < pescador_data.frames.count; a++) {
-        pescador_data.animations.pescar.frames.push(a);
-    }
+
+
     var spriteSheet = new createjs.SpriteSheet(pescador_data);
     var pescador = new createjs.Sprite(spriteSheet, "run");
+
+    pescador.vel = speed;
 
     pescador.regX = 112;
     pescador.regY = 86.5;
@@ -73,10 +122,10 @@ function Pescador(obj) {
             obj.punta.mover = function(x, y) {
                 stage.cania.estado = 'preparando';
                 createjs.Tween.get(pescador.punta)
-                        .to({guide: {path: [i.x, i.y, i.x - 20, i.y - 46, i.x - 79, i.y - 49, i.x - 182, i.y - 60, i.x - 214, i.y + 50]}}, 530)
+                        .to({guide: {path: [i.x, i.y, i.x - 20, i.y - 46, i.x - 79, i.y - 49, i.x - 182, i.y - 60, i.x - 214, i.y + 50]}}, 530 / pescador.vel)
                         .call(cayendo, [x, y])
-                        .wait(730)
-                        .to({guide: {path: [i.x - 214, i.y + 50, i.x - 182, i.y - 60, i.x - 79, i.y - 49, i.x - 20, i.y - 46, i.x, i.y]}}, 370);
+                        .wait(730 / pescador.vel)
+                        .to({guide: {path: [i.x - 214, i.y + 50, i.x - 182, i.y - 60, i.x - 79, i.y - 49, i.x - 20, i.y - 46, i.x, i.y]}}, 370 / pescador.vel);
             };
 
             stage.cania.graphics.s('white').mt(i.x, i.y)
@@ -87,13 +136,13 @@ function Pescador(obj) {
                 curva = 0;
                 stage.cania.estado = 'cayendo';
                 stage.pescando = createjs.Tween.get(stage.cania.p2)
-                        .wait(400)
-                        .to({x: i.x - 214, y: i.y + 150}, 500)
+                        .wait(400 / pescador.vel)
+                        .to({x: i.x - 214, y: i.y + 150}, 500 / pescador.vel)
                         .call(lanzando, [x, y])
                         .to({guide: {path: [stage.cania.p1.x, stage.cania.p1.y, (stage.cania.p1.x + x) / 2, i.x - ((stage.cania.p1.x + x)) * .5, x, y]}}, 700)
                         .wait(100)
                         .call(pescando)
-                        .to({y: 1004}, 8000)
+                        .to({y: 1004}, 5000)
                         .call(regresar);
             }
 
@@ -155,10 +204,30 @@ function Pescador(obj) {
                 .to({x: 148, y: 343}, 1200)
                 .call(listo)
     }
-    
-     function listo() {
+
+    function carnada() {
+        stage.carnada.visible = true;
+        pescador.estado = 'listo';
+        stage.atrapado = null;
+    }
+    function anima() {
+        pescador.gotoAndPlay('carnada');
+    }
+
+    function listo() {
+        if (stage.atrapado) {
+            createjs.Tween.get(stage.cania.p1)
+                    .wait(2000)
+                    .call(anima);
+            createjs.Tween.get(stage.cania.p1)
+                    .wait(2000)
+                    .wait(1200 / pescador.vel)
+                    .call(carnada);
+
+        } else {
             pescador.estado = 'listo';
         }
+    }
     pescador.pescar = function(x, y) {
         if (pescador.estado == 'listo') {
             pescador.estado = 'pescando';
@@ -169,10 +238,17 @@ function Pescador(obj) {
         }
         if (stage.cania.estado == 'pescando') {
             regresar();
-
         }
+    };
 
-       
+    pescador.saludar = function() {
+        if (pescador.estado == 'listo') {
+            pescador.gotoAndPlay('saludo');
+        }
+    };
+
+    pescador.regresar = function() {
+        regresar();
     };
 
     return pescador;
@@ -310,6 +386,33 @@ function NubeHome(obj) {
     return nubeHome;
 }
 
+function NubePesca(obj) {
+    var nubePesca = new createjs.Bitmap(rutas.imagenes.NUBE_PESCA);
+    nubePesca.velocidad = 680 / 7000; //pixeles/ms
+    if (obj) {
+        if (obj.x) {
+            nubePesca.x = obj.x;
+        }
+        if (obj.y) {
+            nubePesca.y = obj.y;
+        }
+        if (obj.sx) {
+            nubePesca.scaleX = obj.sx;
+        }
+        if (obj.sy) {
+            nubePesca.scaleY = obj.sy;
+        }
+        if (obj.velocidad) {
+            nubePesca.velocidad = obj.velocidad;
+        }
+    }
+    nubePesca.rebobinar = function() {
+        nubePesca.x = 1327;
+    };
+
+    return nubePesca;
+}
+
 function Garza(obj) {
 
     var garza_data = {
@@ -344,6 +447,23 @@ function Garza(obj) {
     };
 
     return garza;
+}
+
+function getFrames(ancho, alto, numero, columnas, regX, regY, index, framesP) {
+    var frames = [];
+    if (framesP)
+        frames = framesP;
+    var cX = 0;
+    var cY = 0;
+    for (var a = 0; a < numero; a++) {
+        if (a % columnas == 0 && a > 0) {
+            cX = 0;
+            cY += alto;
+        }
+        frames.push([cX, cY, ancho, alto, index, regX, regY]);
+        cX += ancho;
+    }
+    return frames;
 }
 
 

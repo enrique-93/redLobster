@@ -47,7 +47,11 @@ rutas.imagenes = {
     TORTUGA: 'images/tortuga.png',
     PESCADOR_BOTE: 'images/pescador_bote.png',
     PUNTERO : 'images/puntero.png',
-    CARNADA : 'images/carnada.png'
+    CARNADA : 'images/carnada.png',
+    PESCADOR_OJOS : 'images/pescador_ojos.png',
+    BURBUJAS: 'images/burbujas.png',
+    LANGOSTA: 'images/langosta.png',
+    PESCADOR_CARNADA : 'images/pescador_carnada.png'
 };
 
 
