@@ -66,6 +66,8 @@ function init() {
     stage.terminos = new createjs.Bitmap(rutas.imagenes.TERMINOS);
     stage.terminos.x = 325;
     stage.terminos.y = 775;
+    
+    stage.terminos.on('mousedown');
 
     //Sombra hombre
     stage.sombra_hombre = new createjs.Bitmap(rutas.imagenes.SOMBRA_HOMBRE);
@@ -143,8 +145,10 @@ function init() {
             stage.imagen_usuario = new createjs.Container();
             stage.imagen_usuario.x = 129;
             stage.imagen_usuario.y = -15;
-            stage.foto = new createjs.Bitmap(canvas.toDataURL("image/png"));
+            var photo = canvas.toDataURL("image/png");
+            stage.foto = new createjs.Bitmap(photo);
             stage.cm = new createjs.Shape();
+            subir(photo);
             stage.cm.graphics.beginFill('black').drawCircle(30, 30, 30).cp();
             stage.foto.mask = stage.cm;
             cambia(stage.foto, 60);

@@ -1,7 +1,7 @@
 var FacebookStrategy = require('passport-facebook').Strategy;
 
 // load up the user model
-var User = require('../models/user');
+
 
 // load the auth variables
 var configAuth = require('./auth');
@@ -36,7 +36,6 @@ module.exports = function(passport) {
     // facebook will send back the token and profile
     function(token, refreshToken, profile, done) {
         var newUser = new User();
-                    console.log('Profile:',profile);
         // asynchronous
         process.nextTick(function() {
 
@@ -53,12 +52,18 @@ module.exports = function(passport) {
                     return done(null, user); // user found, return that user
                 } else {
                     // if there is no user found with that facebook id, create them
-                    
+                    console.log(profile);
                     // set all of the facebook information in our user model
                     newUser.facebook.id = profile.id; // set the users facebook id	                
                     newUser.facebook.token = token; // we will save the token that facebook provides to the user	                
                     newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
-                    newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                    if(profile.emails)
+                        newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
+                    else
+                        newUser.facebook.email = 'no-registrado'
+                    newUser.facebook.baneado = false;
+                    newUser.facebook.bans = [];
+                    newUser.facebook.puntuaje = [];
 
                     // save our user to the database
                     newUser.save(function(err) {

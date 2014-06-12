@@ -6,8 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>
             var user ;
+            var tiempoLimite = 180;
             try{
                 user = <%-user.facebook%>
+                tiempoLimite = <%-tiempoLimite%>;
             }catch(exc){
             }
         </script>
@@ -16,11 +18,15 @@
          <script src="javascripts/atari/tweenjs-0.5.1.min.js" ></script>
          <script src="javascripts/atari/preloadjs-0.2.0.min.js" ></script>
          <script src="javascripts/atari/json2.min.js" ></script>
+         <script src="/socket.io/socket.io.js"></script>
+         <script src="javascripts/socket-client.js"></script>
          <script src="javascripts/recursos.js" ></script>
          <script src="javascripts/animaciones.js" ></script>
          <script src="javascripts/pesquinia.js" ></script>
+         <script src="javascripts/full.js" ></script>
+         <link rel="stylesheet" type="text/css" href="stylesheets/estilo.css">
     </head>
-    <body onload="init()">
+    <body>
         <canvas id="juego" width="1327" height="1004"></canvas>
     </body>
 </html>
