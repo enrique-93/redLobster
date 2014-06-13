@@ -91,7 +91,7 @@ function deNuevo() {
         location.reload();
     })
     bm.on('mousedown', function() {
-        window.open('www.redlobster.com.mx');
+        window.open('http://www.redlobster.com.mx');
     });
     sh.on('mousedown', function() {
         console.log('share')
