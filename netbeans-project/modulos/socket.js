@@ -154,6 +154,7 @@ io.sockets.on('connection', function(socket) {
         var fecha = new Date();
         var fI;
         var fF;
+        /*
         if (fecha < (new Date('2014-06-14 21:00:00'))) {
             fI = new Date('2014-06-14');
             fF = new Date('2014-06-14 20:59:59');
@@ -165,7 +166,9 @@ io.sockets.on('connection', function(socket) {
         if (fecha < (new Date('2014-06-13'))) {
             fI = new Date('2014-06-12 14:20:00');
             fF = new Date('2014-06-12 23:59:59');
-        }
+        }*/
+        fI = new Date('2014-06-12 19:20:00'); 
+        fF = new Date('2014-06-14 20:59:59');
         Marcador.find({
             baneado: false,
             fechaFin: {$gt: fI, $lt: fF}
