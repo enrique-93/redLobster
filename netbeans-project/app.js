@@ -1,4 +1,4 @@
-tiempoLimite = 3;
+tiempoLimite = 180;
 
 mongoose = require('mongoose');
 User = require('./models/user');
