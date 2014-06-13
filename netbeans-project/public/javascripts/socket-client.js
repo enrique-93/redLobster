@@ -117,7 +117,7 @@ function deNuevo() {
             nombreImagen = nombre;
             sh.visible = true;
         });
-    }, 300)
+    }, 1000)
 }
 var Marcador = function(nombre, id, puntos, obj) {
     var marcador = new createjs.Container();

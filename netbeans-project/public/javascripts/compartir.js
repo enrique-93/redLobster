@@ -1,5 +1,5 @@
 var nombreImagen;
-var dir = "pescaredlobster.com";
+var dir = "http://pescaredlobster.com";
 function  compartir_activar() {
 
 
