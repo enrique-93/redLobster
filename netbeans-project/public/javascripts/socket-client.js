@@ -94,16 +94,18 @@ function deNuevo() {
         window.open('http://www.redlobster.com.mx');
     });
     sh.on('mousedown', function() {
-        console.log('share')
+        stage.share=true;
     })
-
+    
+    compartir_activar();
+    
     stage.juego.addChild(menu);
     stage.juego.addChild(bm);
     stage.juego.addChild(bj);
     stage.addChild(tusPuntos);
     stage.addChild(sh);
 
-    sh.visible = false;
+    //sh.visible = false;
 }
 var Marcador = function(nombre, id, puntos, obj) {
     var marcador = new createjs.Container();

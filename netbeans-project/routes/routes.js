@@ -34,6 +34,10 @@ module.exports = function(app, passport) {
         });
     });
     
+    app.get('/cerrar', function(req, res) {
+        res.render('cerrar.ejs');
+    });
+    
     app.post('/subirImagen', isLoggedIn, function(req, res) {
         var data = req.body.url;
         var buffer = new Buffer(data.split(",")[1], 'base64');
