@@ -338,9 +338,9 @@ function init() {
 
 
 
-    createjs.Tween.get(stage.dialogo, {loop: false})
+    /*createjs.Tween.get(stage.dialogo, {loop: false})
             .to({alpha: 0}, 0)
-            .call(dialogo);
+            .call(dialogo);*/
 
     function dialogo() {
         createjs.Tween.get(stage.dialogo, {loop: true})
