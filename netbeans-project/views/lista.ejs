@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+    <head>
+        <title>La pesquiña</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <script src="javascripts/atari/jquery-1.7.2.min.js" ></script>
+         <link rel="stylesheet" type="text/css" href="stylesheets/estilo.css">
+    </head>
+    <body class="lista">
+<div class="puntos">
+    <table class="titulo">
+        <tr>
+            <th class="num">
+                Lugar
+            </th>
+            <th class="col">
+                Nombre
+            </th>
+            <th class="col">
+                Puntos
+            </th>
+            <th class="col">
+                Imagen Usuario
+            </th>
+        </tr>
+    </table>
+    <div class="marcador">
+    <table>
+        <% for(var a=0;a<marcadores.length;a++){%>
+
+        <tr>
+            <td class="num">
+                <%=(a+1)%>
+            <td>
+            <td class="col">
+                <%= marcadores[a].nombre %>
+            </td>
+            <td class="col">
+                <%= marcadores[a].puntos %>
+            </td>
+            <td class="col">
+                <div class="img">
+                    <img src='uploads/<%= marcadores[a].id %>.png'>
+                <div>
+            </td>
+        </tr>
+
+<% } %>
+
+    </table>
+    </div>
+</div>
+<script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51895308-1', 'pescaredlobster.com');
+  ga('send', 'pageview');
+
+        </script>
+    </body>
+</html>

@@ -17,6 +17,22 @@ socket.on('connect', function() {
             tabla.y = 560
             stage.marcas.addChild(tabla)
             stage.addChild(stage.marcas);
+            var link_c = new createjs.Container()
+            var link = new createjs.Shape();
+            link.graphics.f('white').dr(0, 0, 150, 20)
+            link.alpha = .1;
+            var masPuntos = new createjs.Text('Ver tabla completa', 'bold 14px Arial', '#3c1500');
+            masPuntos.maxWidth = 170;
+            link_c.addChild(link, masPuntos)
+            link_c.x = 71;
+            link_c.y = 791;
+            
+            link_c.cursor = 'pointer';
+            link_c.on('click',function(evt){
+                window.open('/lista',"width=120","height=300");
+            })
+            
+            stage.marcas.addChild(link_c);
         }
         for (var a = 0; a < data.length; a++) {
             var marcador = data[a];
@@ -26,7 +42,9 @@ socket.on('connect', function() {
                 lugar: a + 1
             })
             stage.marcas.addChild(mar);
+
         }
+
     });
 
     socket.on('pedirMail', function() {
@@ -140,6 +158,8 @@ var Marcador = function(nombre, id, puntos, obj) {
     imagenC.mask = mascara;
     mascara.x = 27;
     mascara.y = 27;
+
+
 
 
     imagen.x = 216;

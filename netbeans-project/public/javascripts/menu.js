@@ -73,22 +73,22 @@ function init() {
     term.scaleX = 1.4;
     term.x = 516;
     term.y = 811;
-    
+
     term.cursor = 'pointer';
-    
-    term.on('mousedown',function(){
+
+    term.on('mousedown', function() {
         window.open('/terminos');
     })
     var cond = new createjs.Shape();
     cond.graphics.f('white').dr(0, 0, 100, 10);
     cond.alpha = .1;
     cond.scaleX = 1.4;
-    cond.x = 716;
+    cond.x = 660;
     cond.y = 811;
-    
+
     cond.cursor = 'pointer';
-    
-    cond.on('mousedown',function(){
+
+    cond.on('mousedown', function() {
         window.open('/privacidad');
     })
 
@@ -272,9 +272,9 @@ function init() {
     });
 
     stage.jugar_o.on('click', function() {
-        if(user)
+        if (user)
             location.href = '/pesquinia';
-        else{
+        else {
             alert('Conéctate con facebook para empezar a jugar');
         }
     });
@@ -325,6 +325,23 @@ function init() {
     stage.menu.addChild(term);
     stage.menu.addChild(cond);
 
+    var link_c = new createjs.Container()
+    var link = new createjs.Shape();
+    link.graphics.f('white').dr(0, 0, 300, 20)
+    link.alpha = .1;
+    var masPuntos = new createjs.Text('Ver tabla de posiciones', 'bold 22px Arial', '#3c1500');
+    masPuntos.maxWidth = 300;
+    link_c.addChild(link, masPuntos)
+    link_c.x = 1052;
+    link_c.y = 903;
+
+    link_c.cursor = 'pointer';
+    link_c.on('click', function(evt) {
+        window.open('/lista');
+    })
+    
+    stage.menu.addChild(link_c);
+
     //Animaciones
     createjs.Tween.get(stage.ardilla, {loop: true})
             .wait(1000)
@@ -339,8 +356,8 @@ function init() {
 
 
     /*createjs.Tween.get(stage.dialogo, {loop: false})
-            .to({alpha: 0}, 0)
-            .call(dialogo);*/
+     .to({alpha: 0}, 0)
+     .call(dialogo);*/
 
     function dialogo() {
         createjs.Tween.get(stage.dialogo, {loop: true})
