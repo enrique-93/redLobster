@@ -1,5 +1,5 @@
 var nombreImagen;
-var dir = "http://localhost";
+var dir = "pescaredlobster.com";
 function  compartir_activar() {
 
 
@@ -11,7 +11,7 @@ function  compartir_activar() {
             if (stage.share == true) {
                 var fb = {
                     "type": "facebook2",
-                    "app_id": "458625890907115",
+                    "app_id": "646551288753807",
                     "image": dir+"/uploads/"+nombreImagen+".png",
                     "url": dir+"/pesquinia",
                     "redirect_uri": dir+"/cerrar",
