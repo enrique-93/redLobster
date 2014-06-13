@@ -8,7 +8,7 @@ Puntuaje = require('./models/puntuaje');
 
 var express = require('express'),
         app = express(),
-        port = process.env.PORT || 3456,
+        port = process.env.PORT || 80,
         passport = require('passport'),
         flash = require('connect-flash'),
         path = require('path'),
