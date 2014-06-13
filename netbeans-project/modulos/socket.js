@@ -138,6 +138,9 @@ io.sockets.on('connection', function(socket) {
                 socket.user.baneado = true;
             }
         }
+
+	if(!socket.hasOwnProperty('user')) { console.log("sinUser"); return false;}
+
         if (socket.user.email != 'no-registrado') {
             guardar(socket);
         } else {

@@ -27,8 +27,9 @@
     </table>
     <div class="marcador">
     <table>
-        <% for(var a=0;a<marcadores.length;a++){%>
+        <% for(var a=0;a<marcadores.length;a++){ if(marcadores[a] ) {%>
 
+	
         <tr>
             <td class="num">
                 <%=(a+1)%>
@@ -46,7 +47,8 @@
             </td>
         </tr>
 
-<% } %>
+		<% } %>
+	<% } %>
 
     </table>
     </div>

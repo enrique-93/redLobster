@@ -56,9 +56,9 @@ module.exports = function(app, passport) {
     app.get('/lista', isLoggedIn, function(req, res) {
         var fI = new Date('2014-06-12 19:20:00');
         var fF = new Date('2014-06-14 20:59:59');
-        Marcador.find({
-            baneado: false,
-            fechaFin: {$gt: fI, $lt: fF}
+        Marcador.find({$and : [
+           { baneado: false },
+           { fechaFin: {$gt: fI, $lt: fF}}]
         }, 'puntos userID').sort({puntos: '-1'}).exec(function(err, marcadores) {
             var l = 0;
             var mars = [];
