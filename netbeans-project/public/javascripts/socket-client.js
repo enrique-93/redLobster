@@ -23,7 +23,7 @@ socket.on('connect', function() {
             var mar = new Marcador(marcador.nombre, marcador.id, marcador.puntos, {
                 x: 21,
                 y: 600 + 70 * a,
-                lugar: a+1
+                lugar: a + 1
             })
             stage.marcas.addChild(mar);
         }
@@ -94,22 +94,34 @@ function deNuevo() {
         window.open('http://www.redlobster.com.mx');
     });
     sh.on('mousedown', function() {
-        stage.share=true;
+        stage.share = true;
     })
-    
+
     compartir_activar();
-    
+
     stage.juego.addChild(menu);
     stage.juego.addChild(bm);
     stage.juego.addChild(bj);
     stage.addChild(tusPuntos);
     stage.addChild(sh);
 
-    //sh.visible = false;
+    sh.visible = false;
+    bm.visible = !bm.visible;
+    bj.visible = !bj.visible;
+    setTimeout(function() {
+        var url = stage.canvas.toDataURL();
+        bm.visible = !bm.visible;
+        bj.visible = !bj.visible;
+        subir(url, 'subirImagen2', function(nombre) {
+            console.log(nombre)
+            nombreImagen = nombre;
+            sh.visible = true;
+        });
+    }, 300)
 }
 var Marcador = function(nombre, id, puntos, obj) {
     var marcador = new createjs.Container();
-    var nombreT = new createjs.Text(obj.lugar+'. '+nombre, 'bold 22px Arial', '#3c1500');
+    var nombreT = new createjs.Text(obj.lugar + '. ' + nombre, 'bold 22px Arial', '#3c1500');
     nombreT.maxWidth = 270;
     var puntosT = new createjs.Text(puntos + ' puntos', 'bold 24px Arial', '#3c1500');
     puntosT.y = 21;

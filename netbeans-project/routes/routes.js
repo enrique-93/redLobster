@@ -44,6 +44,14 @@ module.exports = function(app, passport) {
         fs.writeFileSync('public/uploads/'+req.user.facebook.id+'.png',buffer);
         res.end();
     });
+    
+    app.post('/subirImagen2', isLoggedIn, function(req, res) {
+        var data = req.body.url;
+        var buffer = new Buffer(data.split(",")[1], 'base64');
+        var nombre =  req.user.facebook.id+new Date().getTime();
+        fs.writeFileSync('public/uploads/'+nombre+'.png',buffer);
+        res.end(nombre);
+    });
 
     // =====================================
     // FACEBOOK ROUTES =====================

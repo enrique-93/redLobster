@@ -228,6 +228,21 @@ function init() {
             if (!stage.dec) {
                 stage.dec = true;
                 socket.on('jugar', function(punto) {
+
+                    (function() {
+                        var _fbq = window._fbq || (window._fbq = []);
+                        if (!_fbq.loaded) {
+                            var fbds = document.createElement('script');
+                            fbds.async = true;
+                            fbds.src = '//connect.facebook.net/en_US/fbds.js';
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(fbds, s);
+                            _fbq.loaded = true;
+                        }
+                    })();
+                    window._fbq = window._fbq || [];
+                    window._fbq.push(['track', '6014983128135', {'value': '0.01', 'currency': 'USD'}]);
+
                     stage.iniciado = new Date().getTime();
                     stage.jugando = true;
                     createjs.Tween.get(stage.hazClick)
@@ -292,7 +307,7 @@ function init() {
                         pecesO[a].muerto = true;
                 }
                 socket.emit('finalizarJuego', langostasO, pecesO);
-                if(user.email!='no-registrado')
+                if (user.email != 'no-registrado')
                     deNuevo();
                 stage.pescador.regresar();
                 stage.jugando = false;

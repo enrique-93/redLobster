@@ -1,12 +1,15 @@
 var fullMode = false;
 var canvas;
 
-function subir(url) {
-    $.post('/subirImagen', {url: url}, function() {
+function subir(url,tipo,call) {
+    tipo = tipo || '/subirImagen';
+    call = call || function(){
         console.log('imagen actualizada');
+    };
+    $.post(tipo, {url: url}, function(res){
+        call(res);
     });
-}
-;
+};
 
 function setFullscreen() {
     var w = window.innerWidth / canvas.width;
