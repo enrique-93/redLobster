@@ -17,6 +17,14 @@ module.exports = function(app, passport) {
         });
     });
     
+    app.get('/terminos',function(req,res){
+        res.render('terminos.ejs')
+    });
+    
+    app.get('/privacidad',function(req,res){
+        res.render('privacidad.ejs')
+    });
+    
     app.get('/pesquinia', isLoggedIn, function(req, res) {
         req.user.facebook._id = req.user._id;
         var user = JSON.parse(JSON.stringify(req.user));

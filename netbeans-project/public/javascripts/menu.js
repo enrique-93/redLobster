@@ -66,8 +66,31 @@ function init() {
     stage.terminos = new createjs.Bitmap(rutas.imagenes.TERMINOS);
     stage.terminos.x = 325;
     stage.terminos.y = 775;
+
+    var term = new createjs.Shape();
+    term.graphics.f('white').dr(0, 0, 100, 10);
+    term.alpha = .1;
+    term.scaleX = 1.4;
+    term.x = 516;
+    term.y = 811;
     
-    stage.terminos.on('mousedown');
+    term.cursor = 'pointer';
+    
+    term.on('mousedown',function(){
+        window.open('/terminos');
+    })
+    var cond = new createjs.Shape();
+    cond.graphics.f('white').dr(0, 0, 100, 10);
+    cond.alpha = .1;
+    cond.scaleX = 1.4;
+    cond.x = 716;
+    cond.y = 811;
+    
+    cond.cursor = 'pointer';
+    
+    cond.on('mousedown',function(){
+        window.open('/privacidad');
+    })
 
     //Sombra hombre
     stage.sombra_hombre = new createjs.Bitmap(rutas.imagenes.SOMBRA_HOMBRE);
@@ -122,18 +145,18 @@ function init() {
         stage.nombre.lineWidth = 150;
         stage.nombre.maxWidth = 110;
         stage.nombre.textBaseline = "middle";
-        
+
         stage.cerrar = new createjs.Container();
         stage.cerrar_texto = new createjs.Text('desconectar', '25px Arial', 'black');
         stage.recuadroC = new createjs.Shape();
-        stage.recuadroC.graphics.f('rgba(100,100,100,.7)').dr(0,0,170,28);
-        
-        stage.cerrar.addChild(stage.recuadroC,stage.cerrar_texto);
+        stage.recuadroC.graphics.f('rgba(100,100,100,.7)').dr(0, 0, 170, 28);
+
+        stage.cerrar.addChild(stage.recuadroC, stage.cerrar_texto);
         stage.cerrar.x = 47;
         stage.cerrar.y = 45;
         stage.cerrar.visible = false;
-        
-        
+
+
         var image = new Image();
         image.crossOrigin = "Anonymous";
         image.src = 'https://graph.facebook.com/' + user.id + '/picture?width=160&height=160&size=normal';
@@ -249,7 +272,11 @@ function init() {
     });
 
     stage.jugar_o.on('click', function() {
-        location.href = '/pesquinia';
+        if(user)
+            location.href = '/pesquinia';
+        else{
+            alert('Conéctate con facebook para empezar a jugar');
+        }
     });
 
     stage.ins_o.on('click', function() {
@@ -295,6 +322,8 @@ function init() {
     stage.menu.addChild(stage.carpintero);
     stage.menu.addChild(stage.terminos);
     stage.menu.addChild(stage.modal_instrucciones);
+    stage.menu.addChild(term);
+    stage.menu.addChild(cond);
 
     //Animaciones
     createjs.Tween.get(stage.ardilla, {loop: true})
