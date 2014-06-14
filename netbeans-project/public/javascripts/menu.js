@@ -340,7 +340,8 @@ function init() {
         window.open('/lista');
     })
     
-    //stage.menu.addChild(link_c);
+    if(user)
+    stage.menu.addChild(link_c);
 
     //Animaciones
     createjs.Tween.get(stage.ardilla, {loop: true})

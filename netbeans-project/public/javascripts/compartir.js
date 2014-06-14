@@ -15,7 +15,7 @@ function  compartir_activar() {
                     "image": dir+"/uploads/"+nombreImagen+".png",
                     "url": dir+"/pesquinia",
                     "redirect_uri": dir+"/cerrar",
-                    "name": "Logré hacer " + puntos + " puntos en la pesquiña",
+                    "name": "Logré hacer " + puntos + " puntos en la pesca de Red Lobster",
                     "text": "¿Cuántos podrás hacer tú?",
                     "caption": "¡Participa! http://pescaredlobster.com"
                 }

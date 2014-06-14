@@ -32,7 +32,7 @@ socket.on('connect', function() {
                 window.open('/lista',"width=120","height=300");
             })
             
-            //stage.marcas.addChild(link_c);
+            stage.marcas.addChild(link_c);
         }
         for (var a = 0; a < data.length; a++) {
             var marcador = data[a];

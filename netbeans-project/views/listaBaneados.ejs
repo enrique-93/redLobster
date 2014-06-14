@@ -9,23 +9,23 @@
     </head>
     <body class="lista">
 <div class="puntos">
-    <table class="titulo">
+    <table>
         <tr>
             <th class="num">
                 Lugar
             </th>
-            <th class="col">
+            <th class="col b">
                 Nombre
             </th>
-            <th class="col">
+            <th class="col b">
                 Puntos
             </th>
-            <th class="col">
+            <th class="col b">
                 Imagen Usuario
             </th>
         </tr>
     </table>
-    <div class="marcador">
+    <div class="marcador mb">
     <table>
         <% for(var a=0;a<marcadores.length;a++){ if(marcadores[a] ) {%>
 
@@ -34,16 +34,14 @@
             <td class="num">
                 <%=(a+1)%>
             <td>
-            <td class="col">
-                <a href='https://www.facebook.com/<%=marcadores[a].id%>'>
+            <td class="col b">
                 <%= marcadores[a].nombre %>
-                </a>
             </td>
-            <td class="col">
+            <td class="col b">
                 <%= marcadores[a].puntos %>
             </td>
-            <td class="col">
-                <div class="img">
+            <td class="col b">
+                <div class="img o">
                     <img src='uploads/<%= marcadores[a].id %>.png'>
                 <div>
             </td>

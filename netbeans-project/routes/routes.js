@@ -53,36 +53,99 @@ module.exports = function(app, passport) {
         res.end(nombre);
     });
 
-    app.get('/lista', isLoggedIn, function(req, res) {
-        var fI = new Date('2014-06-12 19:20:00');
-        var fF = new Date('2014-06-14 20:59:59');
-        Marcador.find({$and : [
-           { baneado: false },
-           { fechaFin: {$gt: fI, $lt: fF}}]
-        }, 'puntos userID').sort({puntos: '-1'}).exec(function(err, marcadores) {
-            var l = 0;
-            var mars = [];
-            var seguir = true;
-            function marcar(marcador, val) {
-                User.findOne({'facebook.id': marcador.userID}, function(err, user) {
-                    if (user.facebook.baneado == false && seguir == true) {
-                        if (l < 100) {
-                            mars[val] = ({id: user.facebook.id, nombre: user.facebook.name, puntos: marcador.puntos});
-                            if (l+1 == 100 || l+1 == marcadores.length) {
-                                console.log(mars);
-                                res.render('lista.ejs',{marcadores:mars});
-                            };
-                        }
-                        l++;
-                    }
-                });
-            }
-            ;
-            for (var a = 0; a < marcadores.length; a++) {
-                var marcador = marcadores[a];
-                marcar(marcador, a);
+    app.get('/lista', function(req, res) {
+        var limite = 0;
+        var mars = [];
+        User.find({"facebook.baneado": false}, function(err, users) {
+            if (err) {
+                console.log(err)
+                res.end('error');
+            } else {
+                
+                limite = users.length;
+                for (var a = 0; a < users.length; a++) {
+                    buscaMejorMarcador(users[a].facebook);
+                }
+                if (limite == 0)
+                    res.render('lista.ejs', {marcadores: mars});
             }
         });
+
+        function buscaMejorMarcador(user) {
+            var fI = new Date('2014-06-12 19:20:00');
+            var fF = new Date('2014-06-14 20:59:59');
+            var userID = user.id;
+            Marcador.find({$and: [
+                    {userID:userID},
+                    {baneado:false},
+                    {fechaFin: {$gt: fI, $lt: fF}}]
+            }, 'puntos bans').sort({puntos: '-1'}).limit(1).exec(function(err, marcador) {
+                marcador = marcador[0];
+                console.log(marcador);
+                if(marcador)
+                    mars.push({id: user.id, nombre: user.name, puntos: marcador.puntos});
+                else{
+                    mars.push('sin-marcador');
+                }
+                if(mars.length==limite){
+                    function sort(a,b){
+                        return b.puntos-a.puntos;
+                    }
+                    var marcadores = [];
+                    for(var a =0;a<mars.length;a++){
+                        if(mars[a]=='sin-marcador'){
+                            mars.splice(a,1);
+                            a--;
+                        }else{
+                            marcadores.push(mars[a])
+                        }
+                    }
+                    marcadores.sort(sort);
+                    res.render('lista.ejs', {marcadores: marcadores})
+                }
+            });
+        }
+    });
+    
+    app.get('/listaBaneados', function(req, res) {
+        var limite = 0;
+        var mars = [];
+        User.find({"facebook.baneado": true}, function(err, users) {
+            if (err) {
+                console.log(err)
+                res.end('error');
+            } else {
+                
+                limite = users.length;
+                for (var a = 0; a < users.length; a++) {
+                    buscaMejorMarcador(users[a].facebook);
+                }
+                if (limite == 0)
+                    res.render('listaBaneados.ejs', {marcadores: mars});
+            }
+        });
+
+        function buscaMejorMarcador(user) {
+            var fI = new Date('2014-06-12 19:20:00');
+            var fF = new Date('2014-06-14 20:59:59');
+            var userID = user.id;
+            Marcador.find({$and: [
+                    {userID:userID},
+                    {baneado:true},
+                    {fechaFin: {$gt: fI, $lt: fF}}]
+            }, 'puntos bans').sort({puntos: '-1'}).limit(1).exec(function(err, marcador) {
+                marcador = marcador[0];
+                console.log(marcador);
+                if(marcador)
+                    mars.push({id: user.id, nombre: user.name, puntos: user.id+'---'+JSON.stringify(marcador.bans)});
+                else{
+                    mars.push('sin-marcador');
+                }
+                if(mars.length==limite){
+                    res.render('listaBaneados.ejs', {marcadores: mars})
+                }
+            });
+        }
     });
 
     // =====================================

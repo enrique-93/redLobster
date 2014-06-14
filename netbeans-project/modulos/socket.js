@@ -154,55 +154,54 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('getPuntuajes', function() {
-        var fecha = new Date();
-        var fI;
-        var fF;
-        /*
-        if (fecha < (new Date('2014-06-14 21:00:00'))) {
-            fI = new Date('2014-06-14');
-            fF = new Date('2014-06-14 20:59:59');
-        }
-        if (fecha < (new Date('2014-06-14'))) {
-            fI = new Date('2014-06-13');
-            fF = new Date('2014-06-13 23:59:59');
-        }
-        if (fecha < (new Date('2014-06-13'))) {
-            fI = new Date('2014-06-12 14:20:00');
-            fF = new Date('2014-06-12 23:59:59');
-        }*/
-        fI = new Date('2014-06-12 19:20:00'); 
-        fF = new Date('2014-06-14 20:59:59');
-        Marcador.find({
-            baneado: false,
-            fechaFin: {$gt: fI, $lt: fF}
-        }, 'puntos userID').sort({puntos: '-1'}).limit(3).exec(function(err, marcadores) {
-            var l = 0;
-            var mars = [];
-            var seguir = true;
-            function marcar(marcador, ins) {
-                User.findOne({'facebook.id': marcador.userID}, function(err, user) {
-                    if (user.facebook.baneado == false && seguir == true) {
-
-                        if (mars.length < 3) {
-                            mars.push({id: user.facebook.id, nombre: user.facebook.name, puntos: marcador.puntos});
-                            if (ins == 19)
-                                socket.emit('puntos', mars);
-                        }
-                        if (mars.length == 3) {
-                            socket.emit('puntos', mars);
-
-                            seguir = false;
-                        }
-
-                    }
-                });
-            }
-            ;
-            for (var a = 0; a < marcadores.length; a++) {
-                var marcador = marcadores[a];
-                marcar(marcador, a);
+        var limite = 0;
+        var mars = [];
+        User.find({"facebook.baneado": false}, function(err, users) {
+            if (err) {
+                console.log(err)
+            } else {
+                
+                limite = users.length;
+                for (var a = 0; a < users.length; a++) {
+                    buscaMejorMarcador(users[a].facebook);
+                }
             }
         });
+
+        function buscaMejorMarcador(user) {
+            var fI = new Date('2014-06-12 19:20:00');
+            var fF = new Date('2014-06-14 20:59:59');
+            var userID = user.id;
+            Marcador.find({$and: [
+                    {userID:userID},
+                    {baneado:false},
+                    {fechaFin: {$gt: fI, $lt: fF}}]
+            }, 'puntos bans').sort({puntos: '-1'}).limit(1).exec(function(err, marcador) {
+                marcador = marcador[0];
+                if(marcador)
+                    mars.push({id: user.id, nombre: user.name, puntos: marcador.puntos});
+                else{
+                    mars.push('sin-marcador');
+                }
+                if(mars.length==limite){
+                    function sort(a,b){
+                        return b.puntos-a.puntos;
+                    }
+                    var marcadores = [];
+                    for(var a =0;a<mars.length;a++){
+                        if(mars[a]=='sin-marcador'){
+                            mars.splice(a,1);
+                            a--;
+                        }else{
+                            marcadores.push(mars[a])
+                        }
+                    }
+                    marcadores.sort(sort);
+                    marcadores.splice(3);
+                    socket.emit('puntos',marcadores)
+                }
+            });
+        }
     });
 
     socket.on('disconnect', function() {
