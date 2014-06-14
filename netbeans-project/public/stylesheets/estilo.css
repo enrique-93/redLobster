@@ -67,3 +67,21 @@ margin-top: 10px;
 .mb{
     width:660px;
 }
+
+.left{
+    float:left;
+}
+
+.contador{
+    width: 600px;
+}
+
+.contador h1{
+    font: 60px Arial;
+    text-align: center;
+}
+
+.cd{
+    font: 80px Arial !important; 
+    color: #C09853;
+}
