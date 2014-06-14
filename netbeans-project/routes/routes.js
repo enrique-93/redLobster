@@ -249,7 +249,7 @@ module.exports = function(app, passport) {
                 marcador = marcador[0];
                 console.log(marcador);
                 if(marcador)
-                    mars.push({id: user.id, nombre: user.name, puntos: user.id+'---'+JSON.stringify(marcador.bans)});
+                    mars.push({id: user.id, nombre: user.name, puntos: JSON.stringify(marcador.bans)});
                 else{
                     mars.push('sin-marcador');
                 }
