@@ -107,6 +107,118 @@ module.exports = function(app, passport) {
         }
     });
     
+    app.get('/listaCompleta', function(req, res) {
+        var limite = 0;
+        var mars = [];
+        User.find({}, function(err, users) {
+            if (err) {
+                console.log(err)
+                res.end('error');
+            } else {
+                
+                limite = users.length;
+                for (var a = 0; a < users.length; a++) {
+                    buscaMejorMarcador(users[a].facebook);
+                }
+                if (limite == 0)
+                    res.render('listaCompleta.ejs', {marcadores: mars});
+            }
+        });
+
+        function buscaMejorMarcador(user) {
+            var fI = new Date('2014-06-12 19:20:00');
+            var fF = new Date('2014-06-14 20:59:59');
+            var userID = user.id;
+            Marcador.find({$and: [
+                    {userID:userID},
+                    {fechaFin: {$gt: fI, $lt: fF}}]
+            }, 'puntos bans fechaFin').sort({puntos: '-1'}).limit(1).exec(function(err, marcador) {
+                marcador = marcador[0];
+                console.log(marcador);
+                if(marcador){
+                    var trampa = 'no';
+                    if(user.baneado == true)
+                        trampa='si';
+                    mars.push({id: user.id, nombre: user.name, email:user.email,bans:JSON.stringify(marcador.bans),trampa:trampa, puntos: marcador.puntos,fecha:marcador.fechaFin});
+                }
+                else{
+                    mars.push('sin-marcador');
+                }
+                if(mars.length==limite){
+                    function sort(a,b){
+                        return b.puntos-a.puntos;
+                    }
+                    var marcadores = [];
+                    for(var a =0;a<mars.length;a++){
+                        if(mars[a]=='sin-marcador'){
+                            mars.splice(a,1);
+                            a--;
+                        }else{
+                            marcadores.push(mars[a])
+                        }
+                    }
+                    marcadores.sort(sort);
+                    res.render('listaCompleta.ejs', {marcadores: marcadores})
+                }
+            });
+        }
+    });
+    
+   app.get('/listaFinal', function(req, res) {
+        var limite = 0;
+        var mars = [];
+        User.find({"facebook.baneado":false}, function(err, users) {
+            if (err) {
+                console.log(err)
+                res.end('error');
+            } else {
+                
+                limite = users.length;
+                for (var a = 0; a < users.length; a++) {
+                    buscaMejorMarcador(users[a].facebook);
+                }
+                if (limite == 0)
+                    res.render('listaFinal.ejs', {marcadores: mars});
+            }
+        });
+
+        function buscaMejorMarcador(user) {
+            var fI = new Date('2014-06-12 19:20:00');
+            var fF = new Date('2014-06-14 20:59:59');
+            var userID = user.id;
+            Marcador.find({$and: [
+                    {baneado:false},
+                    {userID:userID},
+                    {fechaFin: {$gt: fI, $lt: fF}}]
+            }, 'puntos bans fechaFin').sort({puntos: '-1'}).limit(1).exec(function(err, marcador) {
+                marcador = marcador[0];
+                console.log(marcador);
+                if(marcador){
+                    mars.push({id: user.id, nombre: user.name, email:user.email, puntos: marcador.puntos,fecha:marcador.fechaFin});
+                }
+                else{
+                    mars.push('sin-marcador');
+                }
+                if(mars.length==limite){
+                    function sort(a,b){
+                        return b.puntos-a.puntos;
+                    }
+                    var marcadores = [];
+                    for(var a =0;a<mars.length;a++){
+                        if(mars[a]=='sin-marcador'){
+                            mars.splice(a,1);
+                            a--;
+                        }else{
+                            marcadores.push(mars[a])
+                        }
+                    }
+                    marcadores.sort(sort);
+                    res.render('listaFinal.ejs', {marcadores: marcadores})
+                }
+            });
+        }
+    }); 
+    
     app.get('/listaBaneados', function(req, res) {
         var limite = 0;
         var mars = [];
