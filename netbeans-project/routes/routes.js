@@ -142,7 +142,7 @@ module.exports = function(app, passport) {
                     mars.push({id: user.id, nombre: user.name, email:user.email,bans:JSON.stringify(marcador.bans),trampa:trampa, puntos: marcador.puntos,fecha:marcador.fechaFin});
                 }
                 else{
-                    mars.push('sin-marcador');
+                    mars.push({id: user.id, nombre: user.name, email:user.email,bans:"",trampa:"no", puntos: 0,fecha:"--/--/-- --:--:--"});
                 }
                 if(mars.length==limite){
                     function sort(a,b){
