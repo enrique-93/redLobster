@@ -107,6 +107,60 @@ module.exports = function(app, passport) {
         }
     });
     
+    app.get('/lista-ganadores', function(req, res) {
+        var limite = 0;
+        var mars = [];
+        User.find({"facebook.baneado": false}, function(err, users) {
+            if (err) {
+                console.log(err)
+                res.end('error');
+            } else {
+                
+                limite = users.length;
+                for (var a = 0; a < users.length; a++) {
+                    buscaMejorMarcador(users[a].facebook);
+                }
+                if (limite == 0)
+                    res.render('listaG.ejs', {marcadores: mars});
+            }
+        });
+
+        function buscaMejorMarcador(user) {
+            var fI = new Date('2014-06-12 19:20:00');
+            var fF = new Date('2014-06-14 20:59:59');
+            var userID = user.id;
+            Marcador.find({$and: [
+                    {userID:userID},
+                    {baneado:false},
+                    {fechaFin: {$gt: fI, $lt: fF}}]
+            }, 'puntos bans').sort({puntos: '-1'}).limit(1).exec(function(err, marcador) {
+                marcador = marcador[0];
+                console.log(marcador);
+                if(marcador)
+                    mars.push({id: user.id, nombre: user.name, puntos: marcador.puntos});
+                else{
+                    mars.push('sin-marcador');
+                }
+                if(mars.length==limite){
+                    function sort(a,b){
+                        return b.puntos-a.puntos;
+                    }
+                    var marcadores = [];
+                    for(var a =0;a<mars.length;a++){
+                        if(mars[a]=='sin-marcador'){
+                            mars.splice(a,1);
+                            a--;
+                        }else{
+                            marcadores.push(mars[a])
+                        }
+                    }
+                    marcadores.sort(sort);
+                    res.render('listaG.ejs', {marcadores: marcadores})
+                }
+            });
+        }
+    });
+    
     app.get('/listaCompleta', function(req, res) {
         var limite = 0;
         var mars = [];
