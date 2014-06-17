@@ -42,7 +42,7 @@ io.sockets.on('connection', function(socket) {
     });
 
     socket.on('pescado', function(tipo, puntos) {
-
+        console.log('pesca',tipo,puntos);
         if (!socket.fin && socket.marcador) {
 
             function agregar() {
