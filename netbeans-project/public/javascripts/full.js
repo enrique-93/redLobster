@@ -1,15 +1,16 @@
 var fullMode = false;
 var canvas;
 
-function subir(url,tipo,call) {
+function subir(url, tipo, call) {
     tipo = tipo || '/subirImagen';
-    call = call || function(){
+    call = call || function() {
         console.log('imagen actualizada');
     };
-    $.post(tipo, {url: url}, function(res){
+    $.post(tipo, {url: url}, function(res) {
         call(res);
     });
-};
+}
+;
 
 function setFullscreen() {
     var w = window.innerWidth / canvas.width;
@@ -47,21 +48,41 @@ function launchFullScreen(element) {
 }
 
 $().ready(function() {
+    
+    function setBoton(){
+        var pp = $(canvas).offset()
+        $('#pantalla').css({top: pp.top + $(canvas).height() - $('#pantalla').height(), left: pp.left + $(canvas).width() - $('#pantalla').width()})
+    }
+
+    
+    $(window).resize(function() {
+        setBoton()
+    })
+    
+    
     init();
     canvas = stage.canvas;
+    
+    
 
     var dispositivo = navigator.userAgent.toLowerCase();
     if (dispositivo.search(/iphone|ipod|ipad|android/) > -1) {
         try {
             stage.puntero.visible = false;
             stage.linea.visible = false;
-        }catch(e){
-            
+        } catch (e) {
+
         }
     }
-    // Lanza en pantalla completa en navegadores que lo soporten
+    
+    $('#pantalla').click(function(){
+        // Lanza en pantalla completa en navegadores que lo soporten
     launchFullScreen(document.documentElement); // la página entera
+    
+    })
+    setBoton();
     setFullscreen();
+    setBoton();
 });
 
 $(window).resize(function(evt) {

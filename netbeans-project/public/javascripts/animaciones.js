@@ -173,6 +173,8 @@ function Pez(obj, tipo) {
         var pt = pez.zona.globalToLocal(punta.x, punta.y)
         if (pez.zona.hitTest(pt.x, pt.y)) {
             if (stage.cania.estado == 'pescando') {
+                pez.sonidos.capturar.play()
+                
                 stage.atrapado = pez;
                 var ant = puntos;
                 puntos += stage.atrapado.puntuaje;
@@ -265,6 +267,9 @@ function Pescador(obj) {
                 stage.cania.estado = 'preparando';
                 createjs.Tween.get(pescador.punta)
                         .to({guide: {path: [i.x, i.y, i.x - 20, i.y - 46, i.x - 79, i.y - 49, i.x - 182, i.y - 60, i.x - 214, i.y + 50]}}, 530 / pescador.vel)
+                        .call(function(){
+                            pescador.sonidos.splash.play({delay:1000});
+                        })
                         .call(cayendo, [x, y])
                         .wait(730 / pescador.vel)
                         .to({guide: {path: [i.x - 214, i.y + 50, i.x - 182, i.y - 60, i.x - 79, i.y - 49, i.x - 20, i.y - 46, i.x, i.y]}}, 370 / pescador.vel);
@@ -343,6 +348,9 @@ function Pescador(obj) {
         stage.pescando.setPaused('true')
         stage.cania.estado = 'rebobinando'
         createjs.Tween.get(stage.cania.p2)
+                .call(function(){
+                    pescador.sonidos.rebobinar.play({offset:10600})
+                })
                 .to({x: 148, y: 343}, 1200)
                 .call(listo)
     }
@@ -370,6 +378,11 @@ function Pescador(obj) {
             pescador.estado = 'pescando';
             pescador.gotoAndPlay('pescar');
             if (pescador.punta) {
+                try{
+                pescador.sonidos.pescar.play({delay:700});
+                }catch(e){
+                    console.log('Imposible de reproducir sonido pescar')
+                }
                 pescador.punta.mover(x, y);
             }
         }

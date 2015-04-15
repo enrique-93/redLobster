@@ -64,4 +64,22 @@ rutas.imagenes = {
     TORTUGA: 'images/tortuga.png'
 };
 
+rutas.sonidos ={
+    VOZ: 'sounds/voz.ogg',
+    JUEGO_DISPARO:'sounds/Game-Spawn.ogg',
+    AVE:'sounds/ave.ogg',
+    DISPARO:'sounds/disparo.ogg',
+    BRINCO:'sounds/juego_brinco.ogg',
+    LASER:'sounds/juego_laser.ogg',
+    TRANSPORTE:'sounds/transporte.ogg',
+    TRUENO:'sounds/trueno.ogg',
+    DAMAGE:'sounds/R-Damage.ogg',
+    MAR: 'sounds/mar.wav',
+    SPLASH: 'sounds/splash.wav',
+    SCORE: 'sounds/puntuar.wav',
+    REBOBINAR: 'sounds/rebobinar.wav',
+    COIN: 'sounds/coin.wav',
+    COIN2: 'sounds/coin2.wav'
+};
+
 

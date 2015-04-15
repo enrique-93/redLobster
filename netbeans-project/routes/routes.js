@@ -25,11 +25,11 @@ module.exports = function(app, passport) {
         res.render('privacidad.ejs')
     });
 
-    app.get('/pesquinia', isLoggedIn, function(req, res) {
-        req.user.facebook._id = req.user._id;
-        var user = JSON.parse(JSON.stringify(req.user));
+    app.get('/pesquinia',  function(req, res) {
+        //req.user.facebook._id = req.user._id;
+        var user = JSON.parse(JSON.stringify({facebook:{name:'Enrique'}}))
         res.render('pesquinia.ejs', {
-            user: req.user, // get the user out of session and pass to template
+            user: JSON.stringify(user), // get the user out of session and pass to template
             tiempoLimite: tiempoLimite
         });
     });

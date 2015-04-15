@@ -140,6 +140,10 @@ function init() {
     stage.marcador.alpha = .9;
 
     stage.marcador_c.addChild(stage.marcador);
+    
+    stage.marcador_c.sonidos={
+        marcar: sonidos.SCORE
+    }
 
     stage.cania = new createjs.Shape();
 
@@ -196,6 +200,13 @@ function init() {
 
 
     stage.pescador = new Pescador({x: 75, y: 299, punta: new createjs.Point(0, 0)});
+    stage.pescador.sonidos={
+      voz: sonidos.VOZ,
+      pescar: sonidos.BRINCO,
+      splash: sonidos.SPLASH,
+      rebobinar : sonidos.REBOBINAR
+    };
+    
     stage.juego.addChildAt(stage.pescador, 8);
     stage.juego.addChildAt(stage.carnada, 12);
     stage.juego.addChild(stage.puntos);
@@ -344,6 +355,8 @@ function init() {
                 .to({x: -1327}, 2654 / obj.velocidad)
                 .wait(399);
     }
+    
+    sonidos.MAR.play();
 }
 
 function setPos(obj, x, y) {
@@ -439,7 +452,11 @@ function generarPeces(num, tipo) {
         };
 
         peces.push(new Pez(obj, tipo));
-
+        
+        peces[peces.length - 1].sonidos = {
+            capturar: sonidos.COIN
+        }
+        
         stage.juego.addChildAt(peces[peces.length - 1], stage.juego.getChildIndex(stage.capa_agua));
     }
 }
@@ -481,6 +498,11 @@ function generarLangostas(num) {
             velocidad: vel,
             puntuaje: puntuaje
         });
+        
+        langosta_c.sonidos = {
+            capturar: sonidos.COIN2
+        }
+        
         var zona_pescable = new createjs.Shape();
         zona_pescable.graphics.f('black').dc(0, 0, 80);
         zona_pescable.regX = 25;
@@ -529,6 +551,10 @@ function generarLangostas(num) {
                     stage.incremento.x = stage.cania.p2.x - 10;
                     stage.incremento.y = stage.cania.p2.y - 30;
                     createjs.Tween.get(stage.incremento)
+                            .call(function(){
+                                stage.pescador.sonidos.voz.play({delay:200})
+                                langostas[i].sonidos.capturar.play()
+                            })
                             .to({alpha: 1}, 1000)
                             .wait(100)
                             .to({alpha: .25, x: stage.puntos.x, y: stage.puntos.y}, 1500)
@@ -566,6 +592,9 @@ function cuentaPuntos(ant, fin, salto) {
     stage.puntos.text = to(ant, 5);
     if (ant < fin)
         createjs.Tween.get(stage.puntos, {loop: false})
+                .call(function(){
+                    stage.marcador_c.sonidos.marcar.play({delay:300,duration:300,volume:.4})
+                })
                 .wait(1)
                 .call(cuentaPuntos, [ant + s, fin, s]);
     else
